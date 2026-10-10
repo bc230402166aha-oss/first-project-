@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Spatial Intelligence Engine</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; padding: 40px; margin: 0; }
+        .card { max-width: 550px; margin: 0 auto; background: #1e293b; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        h1 { color: #38bdf8; font-size: 1.5rem; margin-top: 0; }
+        p { color: #94a3b8; font-size: 0.95rem; }
+        input[type="file"] { margin: 20px 0; width: 100%; color: #94a3b8; }
+        button { background: #0284c7; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold; width: 100%; }
+        button:hover { background: #0369a1; }
+        pre { background: #090d16; padding: 16px; border-radius: 8px; color: #4ade80; overflow-x: auto; margin-top: 20px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Spatial Intelligence Engine</h1>
+        <p>Kaggle Cloud GPU Accelerated Feature Extraction</p>
+        
+        <input type="file" id="rasterInput" accept="image/*" />
+        <button onclick="uploadRaster()">Process Raster</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const API_URL = "https://endpoint-esquire-recede.ngrok-free.dev/api/v1/analyze";
+
+        async function uploadRaster() {
+            const input = document.getElementById('rasterInput');
+            const resultDiv = document.getElementById('result');
+
+            if (!input.files[0]) {
+                alert('Please choose an image file first!');
+                return;
+            }
+
+            resultDiv.innerHTML = '<p style="color: #f59e0b;">Processing on Kaggle Cloud GPU...</p>';
+
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { "ngrok-skip-browser-warning": "69420" },
+                    body: formData
+                });
+                const data = await response.json();
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (err) {
+                resultDiv.innerHTML = `<p style="color: #ef4444;">Error connecting to Kaggle Engine: ${err.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
